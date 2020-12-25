@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +100,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       String           urlWithCursor  = url + "&" + CURSOR + "=" + cursor;
       Optional<IdList> idListResponse = this.requestHelperV2.getRequest(urlWithCursor, IdList.class);
-      if (idListResponse.isEmpty()) {
+      if (!idListResponse.isPresent()) {
         break;
       }
       result.addAll(idListResponse.get().getIds());
@@ -119,7 +120,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
         urlWithCursor = urlWithCursor + "&" + PAGINATION_TOKEN + "=" + token;
       }
       Optional<UserListV2> userListDTO = this.requestHelperV2.getRequest(urlWithCursor, UserListV2.class);
-      if (userListDTO.isEmpty()) {
+      if (!userListDTO.isPresent()) {
         break;
       }
       result.addAll(userListDTO.get().getData());
@@ -310,8 +311,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     List<TweetV1> result;
     String        maxId          = null;
     do {
-      result = List.of(this.requestHelperV2.getRequest(this.getUrlHelper().getFavoriteTweetsUrl(userId, maxId), TweetV1[].class)
-                                           .orElseThrow(NoSuchElementException::new));
+      result = Arrays.asList(this.requestHelperV2.getRequest(this.getUrlHelper().getFavoriteTweetsUrl(userId, maxId), TweetV1[].class)
+                                                 .orElseThrow(NoSuchElementException::new));
       if (result.isEmpty()) {
         break;
       }
@@ -339,7 +340,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(
           URLHelper.SEARCH_TWEET_7_DAYS_URL, parameters, TweetSearchResponseV2.class);
-      if (tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData() == null) {
+      if (!tweetSearchV2DTO.isPresent() || tweetSearchV2DTO.get().getData() == null) {
         break;
       }
       result.addAll(tweetSearchV2DTO.get().getData());
@@ -381,7 +382,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put("tweet.fields", URLHelper.ALL_TWEET_FIELDS);
     Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(
         searchUrl, parameters, TweetSearchResponseV2.class);
-    if (tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData() == null) {
+    if (!tweetSearchV2DTO.isPresent() || tweetSearchV2DTO.get().getData() == null) {
       return new TweetSearchResponse(new ArrayList<>(), null);
     }
     List<Tweet> result = new ArrayList<>(tweetSearchV2DTO.get().getData());
@@ -415,7 +416,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.requestHelperV2.getRequestWithParameters(
           urlHelper.getSearchTweet30DaysUrl(envName), parameters, TweetSearchResponseV1.class);
-      if (tweetSearchV1DTO.isEmpty() || tweetSearchV1DTO.get().getResults() == null) {
+      if (!tweetSearchV1DTO.isPresent() || tweetSearchV1DTO.get().getResults() == null) {
         break;
       }
       result.addAll(tweetSearchV1DTO.get().getResults());
@@ -440,7 +441,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.requestHelperV2.getRequestWithParameters(
           urlHelper.getSearchTweetFullArchiveUrl(envName), parameters, TweetSearchResponseV1.class);
-      if (tweetSearchV1DTO.isEmpty()) {
+      if (!tweetSearchV1DTO.isPresent()) {
         LOGGER.error("empty response on searchForTweetsArchive");
         break;
       }
@@ -513,7 +514,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
         url = url + "&" + PAGINATION_TOKEN + "=" + token;
       }
       Optional<TweetSearchResponseV2> tweetListDTO = this.requestHelperV2.getRequest(url, TweetSearchResponseV2.class);
-      if (tweetListDTO.isEmpty() || tweetListDTO.get().getData() == null) {
+      if (!tweetListDTO.isPresent() || tweetListDTO.get().getData() == null) {
         break;
       }
       result.addAll(tweetListDTO.get().getData());
@@ -546,7 +547,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
         url = url + "&" + PAGINATION_TOKEN + "=" + token;
       }
       Optional<TweetSearchResponseV2> tweetListDTO = this.requestHelperV2.getRequest(url, TweetSearchResponseV2.class);
-      if (tweetListDTO.isEmpty() || tweetListDTO.get().getData() == null) {
+      if (!tweetListDTO.isPresent() || tweetListDTO.get().getData() == null) {
         break;
       }
       result.addAll(tweetListDTO.get().getData());
@@ -568,7 +569,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (!file.exists()) {
       LOGGER.error("file not found at : " + file.toURI().toString());
     } else {
-      result = List.of(customObjectMapper.readValue(file, TweetV1[].class));
+      result = Arrays.asList(customObjectMapper.readValue(file, TweetV1[].class));
     }
     return result;
   }
