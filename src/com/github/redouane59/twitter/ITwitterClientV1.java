@@ -185,5 +185,15 @@ public interface ITwitterClientV1 {
    * Upload a media calling https://upload.twitter.com/1.1/media/upload.json
    */
   UploadMediaResponse uploadMedia(File media, MediaCategory mediaCategory);
+  
+  
+  /**
+   * Get the home timeline of the user calling https://api.twitter.com/1.1/statuses/home_timeline.json
+   */
+  List<Tweet> getHomeTimeline(int nbTweets);
+  
+  List<Tweet> getHomeTimeline(int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId);
+  
+  
 }
 

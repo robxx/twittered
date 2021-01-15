@@ -523,6 +523,35 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     while (token != null && missingTweets > 0);
     return result;
   }
+  
+  
+  public List<Tweet> getHomeTimeline(int nbTweets) {
+	  return this.getHomeTimeline(nbTweets, null, null, null, null);
+  }
+  
+  public List<Tweet> getHomeTimeline(int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
+		String token = null;
+		List<Tweet> result = new ArrayList<>();
+		int apiResultLimit = 200;
+		int missingTweets = nbTweets;
+		do {
+			String url = this.urlHelper.getHomeTimelineUrl(Math.min(apiResultLimit, missingTweets), startTime, endTime,
+					sinceId, untilId);
+			if (token != null) {
+				url = url + "&" + PAGINATION_TOKEN + "=" + token;
+			}
+			Optional<TweetSearchResponseV2> tweetListDTO = this.requestHelperV2.getRequest(url,
+					TweetSearchResponseV2.class);
+			if (tweetListDTO.isEmpty() || tweetListDTO.get().getData() == null) {
+				break;
+			}
+			result.addAll(tweetListDTO.get().getData());
+			token = tweetListDTO.get().getMeta().getNextToken();
+			missingTweets -= apiResultLimit;
+		} while (token != null && missingTweets > 0);
+		return result;
+  }
+  
 
   @Override
   public List<Tweet> getUserMentions(final String userId, final int nbTweets) {

@@ -42,6 +42,9 @@ public class URLHelper {
   private static final String USER_ID                       = "user_id";
   private static final String LOOKUP_JSON                   = "/lookup.json?";
   private static final String USER_TIMELINE                 = "/user_timeline.json?";
+  
+  private static final String HOME_TIMELINE                 = "/home_timeline.json?";
+  
   private static final String JSON                          = ".json";
   private static final String TRIM_USER                     = "trim_user=true";
   private static final String EXCLUDE_RTS                   = "include_rts=false";
@@ -301,7 +304,28 @@ public class URLHelper {
     result += "&" + ALL_TWEET_FIELDS;
     return result;
   }
+  
+	public String getHomeTimelineUrl(int count, LocalDateTime startTime, LocalDateTime endTime, String sinceId,
+			String untilId) {
+		String result = ROOT_URL_V1 + STATUSES + HOME_TIMELINE + "&" + COUNT + "=" + count + "&" + TRIM_USER + "&"
+				+ EXCLUDE_RTS;
+		if (startTime != null) {
+			result += "&start_time=" + ConverterHelper.getStringFromDateV2(startTime);
+		}
+		if (endTime != null) {
+			result += "&end_time=" + ConverterHelper.getStringFromDateV2(endTime);
+		}
+		if (sinceId != null) {
+			result += "&since_id=" + sinceId;
+		}
+		if (untilId != null) {
+			result += "&until_id=" + untilId;
+		}
+		result += "&" + ALL_TWEET_FIELDS;
+		return result;
+	}
 
+  
   public String getUserMentionsUrl(String userId, int maxResult, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
     String result = ROOT_URL_V2 + USERS + "/" + userId + MENTIONS + "?" + MAX_RESULTS + "=" + maxResult;
     if (startTime != null) {

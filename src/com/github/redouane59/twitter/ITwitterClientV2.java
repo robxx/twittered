@@ -189,7 +189,7 @@ public interface ITwitterClientV2 {
    * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets (time & tweet id arguments can be null)
    */
   List<Tweet> getUserTimeline(String userId, int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId);
-
+  
   /**
    * Get the most recent mentions received posted by the user calling https://api.twitter.com/2/users/:id/mentions
    *

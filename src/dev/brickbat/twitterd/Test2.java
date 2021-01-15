@@ -51,13 +51,15 @@ public class Test2 extends TwitterClient {
 			 * List<Tweet> twerts = twitterClient.getUserTimeline(u.getId(), 200); for(Tweet
 			 * t : twerts) { log.info(t.getText()); }
 			 */
-			twitterClient.postTweet("test2");
+			//twitterClient.postTweet("test2");
 			/*
 			 * RateLimitStatus r = twitterClient.getRateLimitStatus(); Map<String, JsonNode>
 			 * m = r.getResources(); for(Entry<String, JsonNode> entry : m.entrySet()) {
 			 * System.out.println(entry.getKey() + " : " + entry.getValue().toString()); }
 			 */
-
+			List<Tweet> twerts = twitterClient.getHomeTimeline(200); for(Tweet t : twerts) { LOGGER.info(t.getText()); }
+			
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
