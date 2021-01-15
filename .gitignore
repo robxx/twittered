@@ -21,3 +21,4 @@ bundle.jar
 /bin
 /target
 twitter-credentials.json
+.*
