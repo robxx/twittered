@@ -2,6 +2,7 @@ package com.github.redouane59.twitter;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -52,6 +53,8 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Request;
+import okhttp3.Response;
 
 @Getter
 @Setter
@@ -525,32 +528,31 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
   
   
-  public List<Tweet> getHomeTimeline(int nbTweets) {
-	  return this.getHomeTimeline(nbTweets, null, null, null, null);
-  }
-  
-  public List<Tweet> getHomeTimeline(int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
-		String token = null;
-		List<Tweet> result = new ArrayList<>();
-		int apiResultLimit = 200;
-		int missingTweets = nbTweets;
-		do {
-			String url = this.urlHelper.getHomeTimelineUrl(Math.min(apiResultLimit, missingTweets), startTime, endTime,
-					sinceId, untilId);
-			if (token != null) {
-				url = url + "&" + PAGINATION_TOKEN + "=" + token;
+	public List<TweetV1> getHomeTimeline(int nbTweets) {
+		return this.getHomeTimeline(nbTweets, null, null);
+	}
+
+	public List<TweetV1> getHomeTimeline(int nbTweets, String sinceId, String maxId) {
+		List<TweetV1> result = new ArrayList<>();
+		int apiResultLimit = 800;
+		String url = this.urlHelper.getHomeTimelineUrl(apiResultLimit, null, null, sinceId, maxId);
+		try {
+			Request request = new Request.Builder().url(url).get().build();
+			RequestHelper rh = new RequestHelper();
+			Request signedRequest = rh.getSignedRequest(request);
+			Response response = rh.getHttpClient(url).newCall(signedRequest).execute();
+			String stringResponse = response.body().string();
+			if (response.code() < 200 || response.code() > 299) {
+				LOGGER.error("GET", url, stringResponse, response.code());
 			}
-			Optional<TweetSearchResponseV2> tweetListDTO = this.requestHelperV2.getRequest(url,
-					TweetSearchResponseV2.class);
-			if (tweetListDTO.isEmpty() || tweetListDTO.get().getData() == null) {
-				break;
-			}
-			result.addAll(tweetListDTO.get().getData());
-			token = tweetListDTO.get().getMeta().getNextToken();
-			missingTweets -= apiResultLimit;
-		} while (token != null && missingTweets > 0);
+			result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, new TypeReference<List<TweetV1>>() {
+			});
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+		}
 		return result;
-  }
+	}
   
 
   @Override

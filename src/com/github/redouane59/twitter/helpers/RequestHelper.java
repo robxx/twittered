@@ -1,10 +1,12 @@
 package com.github.redouane59.twitter.helpers;
 
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.signature.Oauth1SigningInterceptor;
 import java.io.File;
 import java.util.Map;
 import java.util.Optional;
+
+import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.signature.Oauth1SigningInterceptor;
+
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
@@ -119,11 +121,11 @@ public class RequestHelper extends AbstractRequestHelper {
           .build();
       Request signedRequest = this.getSignedRequest(request);
       Response response = this.getHttpClient(url)
-                              .newCall(signedRequest).execute();
-      String stringResponse = response.body().string();
+                              .newCall(signedRequest).execute();      
+      String stringResponse = response.body().string();      
       if (response.code() < 200 || response.code() > 299) {
-        logApiError("GET", url, stringResponse, response.code());
-      }
+        logApiError("GET", url, stringResponse, response.code());        
+      }  
       result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
     } catch (Exception e) {
       LOGGER.error(e.getMessage(), e);
@@ -131,7 +133,7 @@ public class RequestHelper extends AbstractRequestHelper {
     return Optional.ofNullable(result);
   }
 
-  private Request getSignedRequest(Request request) {
+  public Request getSignedRequest(Request request) {
     Oauth1SigningInterceptor oauth = new Oauth1SigningInterceptor.Builder()
         .consumerKey(TwitterClient.TWITTER_CREDENTIALS.getApiKey())
         .consumerSecret(TwitterClient.TWITTER_CREDENTIALS.getApiSecretKey())

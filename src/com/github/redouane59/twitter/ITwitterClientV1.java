@@ -5,6 +5,7 @@ import com.github.redouane59.twitter.dto.others.RateLimitStatus;
 import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetV1;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import java.io.File;
@@ -190,9 +191,9 @@ public interface ITwitterClientV1 {
   /**
    * Get the home timeline of the user calling https://api.twitter.com/1.1/statuses/home_timeline.json
    */
-  List<Tweet> getHomeTimeline(int nbTweets);
+  List<TweetV1> getHomeTimeline(int nbTweets);
   
-  List<Tweet> getHomeTimeline(int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId);
+  List<TweetV1> getHomeTimeline(int nbTweets, String sinceId, String maxId);
   
   
 }

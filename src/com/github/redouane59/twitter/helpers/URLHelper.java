@@ -305,21 +305,21 @@ public class URLHelper {
     return result;
   }
   
+  
 	public String getHomeTimelineUrl(int count, LocalDateTime startTime, LocalDateTime endTime, String sinceId,
-			String untilId) {
-		String result = ROOT_URL_V1 + STATUSES + HOME_TIMELINE + "&" + COUNT + "=" + count + "&" + TRIM_USER + "&"
-				+ EXCLUDE_RTS;
-		if (startTime != null) {
+			String maxId) {
+		String result = ROOT_URL_V1 + STATUSES + HOME_TIMELINE + COUNT + "=" + count + "&" + TRIM_USER;
+		/*if (startTime != null) {
 			result += "&start_time=" + ConverterHelper.getStringFromDateV2(startTime);
 		}
 		if (endTime != null) {
 			result += "&end_time=" + ConverterHelper.getStringFromDateV2(endTime);
-		}
+		}*/
 		if (sinceId != null) {
 			result += "&since_id=" + sinceId;
 		}
-		if (untilId != null) {
-			result += "&until_id=" + untilId;
+		if (maxId != null) {
+			result += "&max_id=" + maxId;
 		}
 		result += "&" + ALL_TWEET_FIELDS;
 		return result;
