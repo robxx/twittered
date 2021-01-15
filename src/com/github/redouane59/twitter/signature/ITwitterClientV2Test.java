@@ -1,4 +1,4 @@
-package com.github.redouane59.twitter.nrt;
+package com.github.redouane59.twitter.signature;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

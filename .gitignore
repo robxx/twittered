@@ -17,3 +17,7 @@ target/
 /okhttpCache/*
 *.asc
 bundle.jar
+/.settings
+/bin
+/target
+twitter-credentials.json
