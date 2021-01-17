@@ -2,25 +2,15 @@ package dev.brickbat.twitterd;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
-import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetV1;
 import com.github.redouane59.twitter.dto.user.User;
-import com.github.redouane59.twitter.dto.user.UserListV2;
-import com.github.redouane59.twitter.helpers.RequestHelperV2;
-import com.github.redouane59.twitter.helpers.URLHelper;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 
-import lombok.extern.slf4j.*;
-
-@Slf4j
+//@Slf4j
 public class Test2 {	
 
 	public static void main(String[] args) {

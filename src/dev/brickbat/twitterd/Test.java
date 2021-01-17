@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.others.RequestToken;
-import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 
 public class Test {
