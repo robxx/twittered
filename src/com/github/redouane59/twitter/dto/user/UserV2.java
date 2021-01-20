@@ -1,5 +1,6 @@
 package com.github.redouane59.twitter.dto.user;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
@@ -16,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
  * @version V2
  */
 @Getter
-@Setter
+//@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -48,6 +49,7 @@ public class UserV2 implements User {
     private String            pinnedTweetId;
     private String            description;
     private String            lang;
+    @JsonProperty("protected")
     private boolean           isProtectedAccount;
     private boolean           following;
 
@@ -146,7 +148,8 @@ public class UserV2 implements User {
 
   @Override
   public boolean isProtectedAccount() {
-    throw new UnsupportedOperationException();
+    //throw new UnsupportedOperationException();
+	  return this.data.isProtectedAccount();
   }
 
   @Override

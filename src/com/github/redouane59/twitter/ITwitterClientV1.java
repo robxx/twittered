@@ -1,5 +1,9 @@
 package com.github.redouane59.twitter;
 
+import java.io.File;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.others.RateLimitStatus;
 import com.github.redouane59.twitter.dto.others.RequestToken;
@@ -8,9 +12,9 @@ import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetV1;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import com.github.redouane59.twitter.dto.user.User;
-import java.io.File;
-import java.time.LocalDateTime;
-import java.util.List;
+
+import dev.brickbat.twitterd.lists.TwitterList;
+import dev.brickbat.twitterd.lists.TwitterListV1;
 
 public interface ITwitterClientV1 {
 
@@ -194,6 +198,10 @@ public interface ITwitterClientV1 {
   List<TweetV1> getHomeTimeline(int nbTweets);
   
   List<TweetV1> getHomeTimeline(int nbTweets, String sinceId, String maxId);
+  
+  
+  TwitterListV1 createTwitterList(String name, String mode, String description);
+  TwitterListV1 createAllTwitterListMembers(String listId, String ids);
   
   
 }

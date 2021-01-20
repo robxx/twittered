@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.redouane59.RelationType;
@@ -37,6 +38,10 @@ import com.github.redouane59.twitter.helpers.RequestHelper;
 import com.github.redouane59.twitter.helpers.RequestHelperV2;
 import com.github.redouane59.twitter.helpers.URLHelper;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
+
+import dev.brickbat.twitterd.lists.TwitterList;
+import dev.brickbat.twitterd.lists.TwitterListV1;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -139,7 +144,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     } else if (relationType == RelationType.FOLLOWING) {
       url = this.urlHelper.getFollowingUrl(userId);
     }
-    return this.getUsersInfoByRelation(url);
+    // TODO yuck
+    return this.getUsersInfoByRelation(url + "&max_results=1000");
   }
 
   @Override
@@ -677,5 +683,32 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return null;
     }
   }
+  
+	public TwitterListV1 createTwitterList(String name, String mode, String description) {
+		String url = this.getUrlHelper().getCreateListUrl();
+		Map<String, String> parameters = new HashMap<>();
+		url += "name=" + name + "&mode=" + mode;
+		
+		return this.requestHelper.postRequest(url, parameters, TwitterListV1.class)
+				.orElseThrow(NoSuchElementException::new);
+	}
+	public TwitterListV1 createAllTwitterListMembers(String listId, String ids) {
+		String url = this.getUrlHelper().getCreateAllTwitterListMembersUrl();
+		Map<String, String> parameters = new HashMap<>();
+		url += "list_id=" + listId + "&user_id=" + ids;
+				
+		return this.requestHelper.postRequest(url, parameters, TwitterListV1.class)
+				.orElseThrow(NoSuchElementException::new);
+	}
 
+	public TwitterList createTwitterListMember(String listId, String id) {
+		String url = this.getUrlHelper().getCreateTwitterListMemberUrl();
+		Map<String, String> parameters = new HashMap<>();
+		url += "list_id=" + listId + "&user_id=" + id;
+				
+		return this.requestHelper.postRequest(url, parameters, TwitterListV1.class)
+				.orElseThrow(NoSuchElementException::new);
+		
+	}
+	
 }

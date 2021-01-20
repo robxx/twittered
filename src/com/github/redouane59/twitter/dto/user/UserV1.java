@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 
 @Getter
-@Setter
+//@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -76,5 +76,9 @@ public class UserV1 implements User {
 
   public LocalDateTime getLastUpdate() {
     return ConverterHelper.getDateFromTwitterString(this.lastUpdate);
+  }
+  
+  public boolean isProtected() {
+	  return this.protectedAccount;
   }
 }

@@ -17,20 +17,7 @@ public class Test {
 
 			// System.out.println(twitterClient.postTweet("test"));
 
-			/*String userName = "twitter";
-			String id = "1063586091129802752";							
-			User result = twitterClient.getUserFromUserId(id);
-			System.out.println(result.getDescription());		
-			result = twitterClient.getUserFromUserName(userName);
-			System.out.println(result.getName());
-			
-			System.out.println(twitterClient.getBearerToken());
-			
-			String id = "1063586091129802752";							
-			User u = twitterClient.getUserFromUserId(id);
-			System.out.println(u.getDescription());	
-			*/
-			
+						
 			/*TwitterClient.TWITTER_CREDENTIALS.setAccessToken("");
 		    TwitterClient.TWITTER_CREDENTIALS.setAccessTokenSecret("");
 		    

@@ -8,8 +8,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Getter
-@Setter
-@Slf4j
+//@Setter
+//@Slf4j
 public class URLHelper {
 
   private static final String ROOT_URL_V1                   = "https://api.twitter.com/1.1";
@@ -71,6 +71,9 @@ public class URLHelper {
   public static final  String GET_OAUTH1_ACCESS_TOKEN_URL   = "https://api.twitter.com/oauth/access_token";
   private static final String MAX_RESULTS                   = "max_results";
 
+  private static final String LISTS = "/lists";
+  private static final String MEMBERS = "/members";
+  private static final String CREATE_ALL_JSON = "/create_all.json?";
 
   public String getSearchTweet30DaysUrl(String envName) {
     return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;
@@ -347,4 +350,16 @@ public class URLHelper {
   public String getUploadMediaUrl(MediaCategory mediaCategory) {
     return "https://upload.twitter.com/1.1/media/upload.json?media_category=" + mediaCategory.label;
   }
+  
+  
+	public String getCreateListUrl() {
+		return ROOT_URL_V1 + LISTS + CREATE_JSON;
+	}
+
+	public String getCreateAllTwitterListMembersUrl() {
+		return ROOT_URL_V1 + LISTS + MEMBERS + CREATE_ALL_JSON;
+	}
+	public String getCreateTwitterListMemberUrl() {
+		return ROOT_URL_V1 + LISTS + MEMBERS + CREATE_JSON;
+	}
 }
